@@ -1,0 +1,115 @@
+﻿<Page x:Class="RomashkaBase.View.UsersView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:local="clr-namespace:RomashkaBase.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="UsersView">
+
+    <Page.Resources>
+        <Storyboard x:Key="OpenUsers">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="GridAddUsers">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="200"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="ButtonOpenAddUser">
+                <SplineThicknessKeyFrame KeyTime="0" Value="0, 0, 0, 10" />
+                <SplineThicknessKeyFrame KeyTime="0:0:0.2" Value="0, 0, 0, 210" />
+            </ThicknessAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="ButtonCloseUser">
+                <SplineThicknessKeyFrame KeyTime="0" Value="0, 0, 0, 10" />
+                <SplineThicknessKeyFrame KeyTime="0:0:0.2" Value="0, 0, 0, 210" />
+            </ThicknessAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="CloseUsers">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="GridAddUsers">
+                <EasingDoubleKeyFrame KeyTime="0" Value="200"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="ButtonOpenAddUser">
+                <SplineThicknessKeyFrame KeyTime="0" Value="0, 0, 0, 210"/>
+                <SplineThicknessKeyFrame KeyTime="0:0:0.2" Value="0, 0, 0, 10" />
+            </ThicknessAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="ButtonCloseUser">
+                <SplineThicknessKeyFrame KeyTime="0" Value="0, 0, 0, 210"/>
+                <SplineThicknessKeyFrame KeyTime="0:0:0.2" Value="0, 0, 0, 10"/>
+            </ThicknessAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpenAddUser">
+            <BeginStoryboard Storyboard="{StaticResource OpenUsers}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpenEditUser">
+            <BeginStoryboard Storyboard="{StaticResource OpenUsers}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonCloseUser">
+            <BeginStoryboard Storyboard="{StaticResource CloseUsers}"/>
+        </EventTrigger>
+    </Page.Triggers>
+
+    <Grid>
+        <DataGrid ItemsSource="{Binding Users}" AutoGenerateColumns="False" SelectedItem="{Binding SelectedUser}" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Логин" Binding="{Binding Login}"/>
+                <DataGridTextColumn Header="Пароль" Binding="{Binding Password}"/>
+                <DataGridTextColumn Header="Компания" Binding="{Binding Company.Name}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <Button x:Name="ButtonOpenAddUser" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" BorderBrush="{x:Null}" Background="#443BED" Height="30" Width="30"
+                Margin="10, 10, 10, 10" VerticalAlignment="Bottom" Click="ButtonOpenAddUser_Click">
+                <materialDesign:PackIcon Kind="Plus" Width="20" Height="20"/>
+            </Button>
+            <Button x:Name="ButtonRemoveUser" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" BorderBrush="{x:Null}" Background="#443BED" Height="30" Width="30"
+                Margin="10, 10, 10, 10" VerticalAlignment="Bottom" Command="{Binding RemoveUser}">
+                <materialDesign:PackIcon Kind="Remove" Width="20" Height="20"/>
+            </Button>
+            <Button x:Name="ButtonOpenEditUser" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" BorderBrush="{x:Null}" Background="#443BED" Height="30" Width="30"
+                Margin="10, 10, 10, 10" VerticalAlignment="Bottom" Command="{Binding EditUser}"
+                    Click="ButtonOpenEditUser_Click">
+                <materialDesign:PackIcon Kind="Edit" Width="20" Height="20"/>
+            </Button>
+            <Button x:Name="ButtonCloseUser" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" BorderBrush="{x:Null}" Background="#443BED" Height="30" Width="30"
+                Command="{Binding CloseUser}" Margin="10, 10, 10, 10" VerticalAlignment="Bottom" Visibility="Collapsed" Click="ButtonCloseUser_Click">
+                <materialDesign:PackIcon Kind="Close" Width="20" Height="20"/>
+            </Button>
+        </StackPanel>
+
+        <Grid x:Name="GridAddUsers" VerticalAlignment="Bottom" Background="#3B8FED" Height="0">
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Имя" Margin="5" VerticalAlignment="Center" Width="116"/>
+                        <TextBox Margin="5" Width="100" VerticalAlignment="Center" Text="{Binding UserName}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Логин" Margin="5" VerticalAlignment="Center" Width="116"/>
+                        <TextBox Margin="5" Width="100" VerticalAlignment="Center" Text="{Binding UserLogin}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Пароль" Margin="5" VerticalAlignment="Center" Width="116"/>
+                        <TextBox Margin="5" Width="100" VerticalAlignment="Center" Text="{Binding UserPassword}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Компания" Margin="5" VerticalAlignment="Center" Width="120"/>
+                        <ComboBox ItemsSource="{Binding Companies}" DisplayMemberPath="Name" Width="120" SelectedItem="{Binding SelectedCompany}">
+                            
+                        </ComboBox>
+                    </StackPanel>
+                    <Button Name="ButtonAddSaveUser" Grid.Row="1" Content="Добавить" Command="{Binding AddUser}"/>
+                    <Button x:Name="ButtonChangeSaveUser" Grid.Row="1" Content="Изменить" Command="{Binding SaveEditUser}"
+                            Visibility="Collapsed"/>
+                </StackPanel>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
